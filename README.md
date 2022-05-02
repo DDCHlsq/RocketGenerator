@@ -1,5 +1,5 @@
 # RocketGenerator
-生成一键生成小火箭分流策略文件。
+一键生成小火箭分流策略文件。
 
 本脚本基于 [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat)
 
