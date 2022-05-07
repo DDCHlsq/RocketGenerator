@@ -49,9 +49,10 @@ def main():
     i = 0
     while i < len(rule_names):
         r = requests.get("https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/" + rule_names[i] + ".txt")
-        # Currently I have no idea how to deal with regexp rules.
+        # Currently, I have no idea how to deal with regexp rules.
         # Fortunately, there aren't many of them. So I just decided to skip them.
-        items = [x.strip() for x in r.text.split("\n") if x != "" and not x.startswith("regexp:")]
+        # Update: URL-REGEX for regular expression
+        items = [x.strip() for x in r.text.split("\n") if x != ""]
         rule_lists_dict[rule_names[i]] = items
         i += 1
 
@@ -79,11 +80,14 @@ def main():
 def generate_rules(rule_group, rule_strategy, rule_lists_dict):
     DOMAIN = "DOMAIN"
     DOMAIN_SUFFIX = "DOMAIN-SUFFIX"
+    URL_REGEX = "URL-REGEX"
     res = ""
     for rule_name in rule_group:
         for domain in rule_lists_dict[rule_name]:
             if domain.startswith("full:"):
                 res += construct_single_line_rule(DOMAIN, domain[5:], rule_strategy)
+            elif domain.startswith("regexp:"):
+                res += construct_single_line_rule(URL_REGEX, domain[7:], rule_strategy)
             else:
                 res += construct_single_line_rule(DOMAIN_SUFFIX, domain, rule_strategy)
     return res
