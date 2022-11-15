@@ -100,26 +100,28 @@ def generate_rules(rule_group, rule_strategy, rule_lists_dict):
             if domain.startswith("full:"):
                 res += construct_single_line_rule(DOMAIN, domain[5:], rule_strategy)
             elif domain.startswith("regexp:"):
-                regex = domain[7:]
-                split_arr = regex.split("\\.")
-                domain_wildcard = ["*"]
-                if "[" not in split_arr[-2] and \
-                        "apple" not in regex and \
-                        "icloud" not in regex and \
-                        "mzstatic" not in regex:
-                    domain_wildcard = ["*"] + split_arr[-2:len(split_arr)]
-                if domain_wildcard[-1][-1] == REG_END:
-                    domain_wildcard[-1] = domain_wildcard[-1][:-1]
-                if len(domain_wildcard) > 1:
-                    new_comer = ".".join(domain_wildcard)
-                    if new_comer not in mitm_domains:
-                        mitm_domains.append(new_comer)
-                if regex[0] == REG_START:
-                    regex = regex[1:]
-                if regex[-1] == REG_END:
-                    regex = regex[:-1]
-                regex = REG_START + REG_HTTP + regex + REG_PORT_SLASH + REG_END
-                res += construct_single_line_rule(URL_REGEX, regex, rule_strategy)
+                # no longer deal with regexp
+                pass
+#                 regex = domain[7:]
+#                 split_arr = regex.split("\\.")
+#                 domain_wildcard = ["*"]
+#                 if "[" not in split_arr[-2] and \
+#                         "apple" not in regex and \
+#                         "icloud" not in regex and \
+#                         "mzstatic" not in regex:
+#                     domain_wildcard = ["*"] + split_arr[-2:len(split_arr)]
+#                 if domain_wildcard[-1][-1] == REG_END:
+#                     domain_wildcard[-1] = domain_wildcard[-1][:-1]
+#                 if len(domain_wildcard) > 1:
+#                     new_comer = ".".join(domain_wildcard)
+#                     if new_comer not in mitm_domains:
+#                         mitm_domains.append(new_comer)
+#                 if regex[0] == REG_START:
+#                     regex = regex[1:]
+#                 if regex[-1] == REG_END:
+#                     regex = regex[:-1]
+#                 regex = REG_START + REG_HTTP + regex + REG_PORT_SLASH + REG_END
+#                 res += construct_single_line_rule(URL_REGEX, regex, rule_strategy)
             else:
                 res += construct_single_line_rule(DOMAIN_SUFFIX, domain, rule_strategy)
     return res
